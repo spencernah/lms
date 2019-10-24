@@ -6,9 +6,9 @@ Insert into customer value ('cusID', 'firstName', 'lastName', 'email', 'address'
 
 Insert into loanType value ('loanTypeID', 'name', 'desc', minAmount, maxAmount, duration, interest, lateInterest, 'departmentID', accessTypeID);
 
-Insert into department value (departmentID, name);
+Insert into department value (departmentID, 'name');
 
-Insert into request (requestID, status, remark, approverID, accountID, loanID, loanTypeID, loanAmount) value (requestID, status, remark, approverID, accountID, loanID, loanTypeID, loanAmount);
+Insert into request (requestID, status, remark, approverID, accountID, loanID, loanTypeID, loanAmount) value (requestID, 'status', 'remark', approverID, accountID, loanID, loanTypeID, loanAmount);
 
 Insert into loan value (loanID, loanTypeID, accountID, loanAmount, outstandingAmount, startDate, dueData);
 
@@ -16,6 +16,6 @@ Insert into payment value ('paymentID', 'transactionID', 'loanID', amount, 'date
 
 Insert into transaction_type value ('transactionID','transactionName');
 
-Insert into access_type value ('accessTypeID, 'name', 'approvalLimit', 'departmentID');
+Insert into access_type value (accessTypeID, 'name', 'approvalLimit', 'departmentID');
 
 Insert into access value ('accountID', 'accessTypeID');
