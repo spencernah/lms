@@ -7,9 +7,6 @@ module.exports = {
     viewTable: (req, res) => {
         let table = req.query.table;
         var SQL;
-        if(table = "customer"){
-            SQL = 'SELECT * FROM customer';
-        }
         switch(table){
             case "customer":
                 SQL = 'SELECT * FROM customer';
@@ -50,6 +47,7 @@ module.exports = {
             if (err) {
                 return res.status(500).send(err);
             }
+            console.log(result);
             res.render('view', {
                 table:table,
                 sql: SQL,

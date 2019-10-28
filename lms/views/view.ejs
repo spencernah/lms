@@ -51,8 +51,6 @@
             <th>last_name</th>
             <th>email</th>
             <th>position</th>
-            <th>email</th>
-            <th>position</th>
             <th>department_id</th>
             <th>username</th>
             <th>password</th>
@@ -65,7 +63,7 @@
             <td><%= staff.email %></td>
             <td><%= staff.position %></td>
             <td><%= staff.department_id %></td>
-            <td><%= staff.usernane %></td>
+            <td><%= staff.username %></td>
             <td><%= staff.password %></td>
         </tr>
         <% }) %>
@@ -73,17 +71,13 @@
 
         <% if (table == "loan") { %>
         <tr>
-            <th>ID</th>
-            <th>first_name</th>
-            <th>last_name</th>
-            <th>email</th>
-            <th>address</th>
-            <th>postalCode</th>
-            <th>headphone</th>
-            <th>DOB</th>
-            <th>job_title</th>
-            <th>company</th>
-            <th>annualSalary</th>
+            <th>loan_id</th>
+            <th>loan_type_id</th>
+            <th>account_id</th>
+            <th>loan_amount</th>
+            <th>outstanding_amount</th>
+            <th>start_date</th>
+            <th>end_date</th>
         </tr>
         <% tableSQL.forEach((loan) => { %>
         <tr>
