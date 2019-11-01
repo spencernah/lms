@@ -56,35 +56,37 @@ module.exports = {
         })
             
     },
-    viewStaff: (req, res) => {
+    editTable: (req, res) => {
         let table = req.query.table;
+        let cus_id = req.query.cus_id;
+        let first_name = req.body.first_name;
+        var SQL = "Update customer set first_name = ? where cus_id = ?;";
 
-        res.render('viewStaff', {
-            table:table
+
+        mydatabase.query(SQL, [first_name, cus_id], (err, result) => {
+            if (err) {
+                return res.status(500).send(err);
+            }
+            console.log("Updated");
+            res.redirect('/admin/view?table=customer');
         })
     },
-    viewDepartment: (req, res) => {
-        res.render('viewDepartment', {})
-    },
-    viewLoan: (req, res) => {
-        res.render('viewLoan', {})
-    },
-    viewLoanRequest: (req, res) => {
-        res.render('viewLoanRequest', {})
-    },
-    viewPayment: (req, res) => {
-        res.render('viewPayment', {})
-    },
-    viewTransactionType: (req, res) => {
-        res.render('viewTransactionType', {})
-    },
-    viewAccess: (req, res) => {
-        res.render('viewAccess', {})
-    },
-    viewAccessType: (req, res) => {
-        res.render('viewAccessType', {})
-    },
     editPage: (req, res) => {
-        res.render('viewAccessType', {})
+        let table = req.query.table;
+        let cus_id = req.query.cus_id;
+        var SQL = "Select * from customer where cus_id = ?;";
+
+
+        mydatabase.query(SQL, [cus_id], (err, result) => {
+            if (err) {
+                return res.status(500).send(err);
+            }
+            console.log(result);
+            res.render('edit', {
+                table:table,
+                sql: SQL,
+                tableSQL: result
+                });
+        })
     }
 }

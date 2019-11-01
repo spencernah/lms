@@ -7,6 +7,7 @@
 <body>
     <%=table %><br />
     <a href="/add<%=table %>">Add <%=table %></a>
+    <a href="/edit<%=table %>">Edit <%=table %></a>
     <% if (tableSQL.length > 0) { %>
     <table border="1">
         <% if (table == "customer") { %>
@@ -27,7 +28,7 @@
         </tr>
         <% tableSQL.forEach((customer) => { %>
         <tr>
-            <td><%= customer.cus_id %></td>
+            <td><a href="/edit?cus_id=<%= customer.cus_id %>"><%= customer.cus_id %></a></td>
             <td><%= customer.first_name %></td>
             <td><%= customer.last_name %></td>
             <td><%= customer.email %></td>
@@ -57,7 +58,7 @@
         </tr>
         <% tableSQL.forEach((staff) => { %>
         <tr>
-            <td><%= staff.staff_id %></td>
+            <td><a href="/edit<%=table %>?staff_id=<%= staff.staff_id %>"><%= staff.staff_id %></a></td>
             <td><%= staff.first_name %></td>
             <td><%= staff.last_name %></td>
             <td><%= staff.email %></td>
@@ -81,7 +82,7 @@
         </tr>
         <% tableSQL.forEach((loan) => { %>
         <tr>
-            <td><%= loan.loan_id %></td>
+            <td><a href="/edit<%=table %>?loan_id=<%= loan.loan_id %>"><%= loan.loan_id %></a></td>
             <td><%= loan.loan_type_id %></td>
             <td><%= loan.account_id %></td>
             <td><%= loan.loan_amount %></td>
@@ -106,7 +107,7 @@
         </tr>
         <% tableSQL.forEach((request) => { %>
         <tr>
-            <td><%= request.request_id %></td>
+            <td><a href="/edit<%=table %>?request_id=<%= request.request_id %>"><%= request.request_id %></a></td>
             <td><%= request.status %></td>
             <td><%= request.remark %></td>
             <td><%= request.account_id %></td>
@@ -125,7 +126,7 @@
         </tr>
         <% tableSQL.forEach((department) => { %>
         <tr>
-            <td><%= department.department_id %></td>
+            <td><a href="/edit<%=table %>?department_id=<%= department.department_id %>"><%= department.department_id %></a></td>
             <td><%= department.name %></td>
         </tr>
         <% }) %>
@@ -146,6 +147,7 @@
             <td><%= payment.loan_id %></td>
             <td><%= payment.amount %></td>
             <td><%= payment.date %></td>
+            <td><a href="/edit<%=table %>?payment_id=<%= payment.payment_id %>">Edit</a></td>
         </tr>
         <% }) %>
         <% } %>
@@ -159,6 +161,7 @@
         <tr>
             <td><%= transaction_type.transaction_type_id %></td>
             <td><%= transaction_type.name %></td>
+            <td><a href="/edit<%=table %>?transaction_type_id=<%= transaction_type.transaction_type_id %>">Edit</a></td>
         </tr>
         <% }) %>
         <% } %>
@@ -172,6 +175,7 @@
         <tr>
             <td><%= access.account_id %></td>
             <td><%= access.accesstype_id %></td>
+            <td><a href="/edit<%=table %>?account_id=<%= access.account_id %>&accesstype_id=<%= access.accesstype_id %>">edit</a></td>
         </tr>
         <% }) %>
         <% } %>
@@ -189,6 +193,7 @@
             <td><%= access_type.name %></td>
             <td><%= access_type.approval_limit %></td>
             <td><%= access_type.department_id %></td>
+            <td><a href="/edit<%=table %>?access_id=<%= access_type.access_id %>">Edit</a></td>
         </tr>
         <% }) %>
         <% } %>

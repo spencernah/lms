@@ -3,8 +3,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
+
 const {addCustomerPage, addCustomer} = require('./adding');
-const {adminPage, viewTable} = require('./admin');
+const {adminPage, viewTable, editTable, editPage} = require('./admin');
 
 const {
   promisify,
@@ -48,6 +49,8 @@ app.get('/addCustomer',addCustomerPage);
 app.post('/addCustomer',addCustomer);
 app.get('/admin',adminPage);
 app.get('/admin/view',viewTable);
+app.get('/edit',editPage);
+app.post('/edit',editTable);
 
 var server = app.listen(80, function () {
    var host = server.address().address

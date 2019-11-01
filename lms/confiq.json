@@ -1,0 +1,17 @@
+{
+    "database_confiq": {
+        "host"     : "localhost",
+
+        "user"     : "root",
+
+        "password" : "TIC2601",
+
+        "// set after db created //" : "",
+
+        "database" : "lms",
+
+        "port": 3306
+
+
+    } 
+}
