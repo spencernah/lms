@@ -2,14 +2,7 @@ const mysql = require('mysql');
 
 const db_config = require('./config.json');
 
-const mydatabase = mysql.createConnection({
-
-    host: confiq.host,
-    user: confiq.user,
-    password: confiq.password,
-    database: confiq.database
-
-});
+const mydatabase = mysql.createConnection(db_config.database_config);
 
 mydatabase.connect((err) => {
     if (err) throw err;

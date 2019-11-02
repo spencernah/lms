@@ -1,6 +1,45 @@
 const fs = require('fs');
+const express = require('express');
 
-module.exports = {
+const Router = express.Router();
+
+const mydatabase = require('./database');
+
+
+
+Router.get('/addcustomer', (req, res) => {
+    res.render('addCustomer', {})
+});
+Router.post('/addcustomer', (req, res) => {
+    let cusID = req.body.cusID;
+    let first_name = req.body.first_name;
+    let last_name = req.body.last_name;
+    let email = req.body.email;
+    let address = req.body.address;
+    let postal_code = req.body.postal_code;
+    let handphone = req.body.handphone;
+    let date_of_birth = req.body.DOB;
+    let job_title = req.body.job_title;
+    let company = req.body.company;
+    let annualSalary = req.body.salary;
+    let userName = req.body.userName;
+    let password = req.body.password;
+
+    let query = "Insert INTO customer values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+
+    mydatabase.query(query, [cusID,first_name,last_name,email,address,postal_code,handphone,date_of_birth,job_title,company,annualSalary, userName, password] , (err, result) => {
+        if (err) {
+            return res.status(500).send(err);
+        }
+        res.redirect('/');
+    })
+
+});
+
+
+
+module.exports = Router;
+/*{
 
     addCustomerPage: (req, res) => {
         res.render('addCustomer', {})
@@ -182,4 +221,4 @@ module.exports = {
         })
     }
 
-}
+}*/
