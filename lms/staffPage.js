@@ -55,10 +55,25 @@ Router.get('/', async (req, res) => {
 
 Router.post('/update/:id', (req,res) => {
     let loan_ID = req.params.id;
+
+    let searchSQL = 'select l.loan_amount, lt.duration from loan l, loan_type lt where l.loantype_id = lt.loantype_id and l.loan_id = ?';
+    let loan_amount;
+    let duration;
+    mydatavase.query(searchSQL, [loan_ID],(err,result)=>{
+        if (err) {
+            return res.status(500).send(err);
+        }
+        loan_amount = result[0].loan_amount;
+        duration = result[0].duration;
+    })
+    console.log(loan_amount)
     
 
-    let updateApproveSQL = 'update loan set status = "approved", approver_id = ? where loan_id = ?;';
-    mydatabase.query(updateApproveSQL,[req.session.sta_id, loan_ID],(err, result)=>{
+    
+
+
+    let updateApproveSQL = 'update loan set outstanding_amount = ? , status = "approved", start_date = current_date()+1, end_date = date_add(current_date(), INTERVAL ? YEAR), approved_on_date = current_date(), approver_id = ? where loan_id = ?;';
+    mydatabase.query(updateApproveSQL,[loan_amount, duration, req.session.sta_id, loan_ID],(err, result)=>{
         if (err) {
             return res.status(500).send(err);
         }
