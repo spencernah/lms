@@ -26,7 +26,8 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use('/admin',adminAddPage);
-app.use('/staff',staffPage)
+app.use('/staff',staffPage);
+
 
 //global.mydatabase = mydatabase;
 
@@ -53,10 +54,7 @@ app.get('/', (req, res) => {
 });
 //app.get('/addCustomer',addCustomerPage);
 //app.post('/addCustomer',addCustomer);
-app.get('/admin',adminPage);
-app.get('/admin/view',viewTable);
-app.get('/edit',editPage);
-app.post('/edit',editTable);
+
 
 var server = app.listen(80, function () {
    var host = server.address().address
