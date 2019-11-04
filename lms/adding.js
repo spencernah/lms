@@ -93,7 +93,7 @@ Router.post('/add/:id', (req, res) => {
                     return res.status(500).send(err);
                 }
 
-                res.redirect('admin/view/customer');
+                res.redirect('/admin/view/customer');
             })
             
             break;
@@ -115,7 +115,7 @@ Router.post('/add/:id', (req, res) => {
                     return res.status(500).send(err);
                 }
 
-                res.redirect('admin/view/staff');
+                res.redirect('/admin/view/staff');
             })
 
             break;
@@ -304,6 +304,21 @@ Router.post('/edit/:id', (req, res) => {
 });
 
 
+Router.get('/delete/:id',(req, res) => {
+    let table = req.params.id;
+    let accountid = req.query.accountid;
+    let accesstypeid = req.query.accesstypeid;
+    var SQL = "DELETE FROM access WHERE accesstype_id = ? AND account_id = ?;";
+
+
+    mydatabase.query(SQL, [accesstypeid, accountid], (err, result) => {
+        if (err) {
+            return res.status(500).send(err);
+        }
+        console.log("Updated");
+        res.redirect('/admin/view?table=customer');
+    })
+});
 
 module.exports = Router;
 /*{

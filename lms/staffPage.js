@@ -18,10 +18,11 @@ Router.get('/', async (req, res) => {
 
         let staff_profile = 'select s.first_name, s.last_name, s.position, d.name from staff s, department d where s.department_id = d.department_id AND s.staff_id = ?;';
         let access_SQL = 'select acty.name from access_type acty where exists (select * from access ac where ac.accesstype_id = acty.access_id AND ac.account_id = ?); ';
-        let approveLoanSQL = 'select l.loan_id, lt.name, l.loan_amount, c.first_name from loan l, loan_type lt, customer c where l.account_id = c.cus_id AND l.status = "new" AND lt.loan_type_id = l.loan_type_id AND exists (select acty.department_id from access_type acty where lt.department_id = acty.department_id AND acty.approval_limit >= l.loan_amount AND exists (select * from access ac where ac.accesstype_id = acty.access_id AND ac.account_id = ? )); ';
+        let approveLoanSQL = 'select l.*, c.first_name, lt.name from loan l, loan_type lt, customer c where l.account_id = c.cus_id AND l.status = "new" AND lt.loan_type_id = l.loan_type_id AND exists (select acty.department_id from access_type acty where lt.department_id = acty.department_id AND acty.approval_limit >= l.loan_amount AND exists (select * from access ac where ac.accesstype_id = acty.access_id AND ac.account_id = ? )) ORDER BY l.date_of_application; ';
         let approveLoan = {};
         let accessRes = {};
         let staffRes = {};
+        
 
         accessRes = await queryAsync(access_SQL, [req.session.sta_id]);
         staffRes = await queryAsync(staff_profile, [req.session.sta_id]);
@@ -50,6 +51,7 @@ Router.post('/update/:id', (req, res) => {
 
         let updateApproveSQL = 'call approval_update(?,?)';
         mydatabase.query(updateApproveSQL, [loan_id, req.session.sta_id], (err, result) => {
+            console.log('updated!')
             if (err) {
                 return res.status(500).send(err);
             }

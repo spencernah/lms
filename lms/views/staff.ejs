@@ -38,6 +38,7 @@
                     <th>Loan Name</th>
                     <th>Customer Name</th>
                     <th>loan amount</th>
+                    <th>Application date</th>
                     <th></th>
                 </tr>
                 <% approveLoan.forEach((loan) => { %>
@@ -45,6 +46,7 @@
                     <td><%= loan.name %></td>
                     <td><%= loan.first_name %></td>
                     <td><%= loan.loan_amount %></td> 
+                    <td><%= loan.date_of_application %></td>
                     <td><form action = "/staff/update/<%= loan.loan_id %>" method = post ><input type="submit" name="add me" value="display"></form></td>
                 </tr>
                 <% }) %>

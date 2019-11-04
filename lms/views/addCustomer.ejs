@@ -17,7 +17,7 @@
             <td style="background-color:#eeeeee;">
 
                 <form action="" method="post">
-                    <% if(table = "customer"){%>
+                    <% if(table == "customer"){%>
                     First name: <input type="text" name="first_name" id="first_name"><br />
                     Last name: <input type="text" name="last_name" id="last_name"><br />
                     Email: <input type="text" name="email" id="email"><br />
@@ -32,7 +32,7 @@
                     Password: <input type="password" name="password" id="password"><br />
                     <% } %>
 
-                    <% if(table = "staff"){%>
+                    <% if(table == "staff"){%>
                         First name: <input type="text" name="first_name" id="first_name"><br />
                         Last name: <input type="text" name="last_name" id="last_name"><br />
                         Email: <input type="text" name="email" id="email"><br />
@@ -44,25 +44,25 @@
 
 
 
-                    <% if(table = "department"){%>
+                    <% if(table == "department"){%>
                         Department ID: 
                         Department name:
                     <% } %>
 
 
-                    <% if(table = "access_type"){%>
+                    <% if(table == "access_type"){%>
                         Access_ID: 
                         Name:
                         Approval Limit:
                         Department:
                     <% } %>
 
-                    <% if(table = "access"){%>
+                    <% if(table == "access"){%>
                         Account ID:
                         Access Type:
                     <% } %>
 
-                    <% if(table = "loan_type"){%>
+                    <% if(table == "loan_type"){%>
                         Loan Type ID:
                         Name:
                         Description:
@@ -74,7 +74,7 @@
                         Department:
                     <% } %>
 
-                    <% if(table = "loan"){%>
+                    <% if(table == "loan"){%>
                         Loan Type:
                         Status:
                         Customer:
@@ -89,7 +89,7 @@
 
                     <% } %>
 
-                    <% if(table = "payment"){%>
+                    <% if(table == "payment"){%>
                         Transaction Type:
                         Loan ID:
                         Payment Amount:
@@ -101,7 +101,7 @@
 
                     <% } %>
 
-                    <% if(table = "transaction_type"){%>
+                    <% if(table == "transaction_type"){%>
                         Transaction Type ID:
                         Name:
 

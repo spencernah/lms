@@ -23,6 +23,7 @@ app.use(session({
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(express.static(__dirname + '/views/'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use('/admin',adminAddPage);
@@ -54,7 +55,10 @@ app.get('/', (req, res) => {
 });
 //app.get('/addCustomer',addCustomerPage);
 //app.post('/addCustomer',addCustomer);
-
+app.get('/demo', (req, res) => {
+  res.render('demoProfile', {
+  });
+});
 
 var server = app.listen(80, function () {
    var host = server.address().address
