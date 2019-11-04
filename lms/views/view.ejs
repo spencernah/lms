@@ -95,7 +95,7 @@
             <td><%= loan.loan_id %></a></td>
             <td><%= loan.loan_type_id %></td>
             <td><%= loan.account_id %></td>
-            <td><%= loan.apporver_id %></td>
+            <td><%= loan.approver_id %></td>
             <td><%= loan.status %></td>
             <td><%= loan.remarks%></td>
             <td><%= loan.loan_amount %></td>
@@ -172,12 +172,28 @@
         <tr>
             <th>account_id</th>
             <th>accesstype_id</th>
+            <th>Edit</th>
+            <th>DELETE</th>
         </tr>
+        <script>
+        function deletingMsg(accountid, accessid){
+            locationd = "/delete?accountid=";
+            locationd = locationd.concat(accountid);
+            message = "Are you sure that you want to delete this?"
+            if (confirm("Are you sure that you want to delete this? AccessID: " + accessid + " for AccountID: " + accountid)){
+                location.replace("/delete?accountid=" + accountid + "&accesstypeid=" + accessid);
+            }else{
+
+            }
+            
+        }
+        </script>
         <% tableSQL.forEach((access) => { %>
         <tr>
             <td><%= access.account_id %></td>
             <td><%= access.accesstype_id %></td>
             <td><a href="/edit/<%=table %>?id=<%= access.account_id %>&id2=<%= access.accesstype_id %>">edit</a></td>
+            <td><button onclick="deletingMsg(<%= access.account_id %>, <%= access.accesstype_id %>)">Delete</button></td>
         </tr>
         <% }) %>
         <% } %>
@@ -188,6 +204,8 @@
             <th>name</th>
             <th>approval_limit</th>
             <th>department_id</th>
+            <th>EDIT</th>
+            
         </tr>
         <% tableSQL.forEach((access_type) => { %>
         <tr>
@@ -196,6 +214,7 @@
             <td><%= access_type.approval_limit %></td>
             <td><%= access_type.department_id %></td>
             <td><a href="/edit/<%=table %>?id=<%= access_type.access_id %>">Edit</a></td>
+            
         </tr>
         <% }) %>
         <% } %>

@@ -71,20 +71,20 @@ Router.post('/add/:id', (req, res) => {
 
     switch (table) {
         case "customer":
-            let first_name = req.body.first_name;
-            let last_name = req.body.last_name;
-            let email = req.body.email;
-            let address = req.body.address;
-            let postal_code = req.body.postal_code;
-            let handphone = req.body.handphone;
-            let date_of_birth = req.body.DOB;
-            let job_title = req.body.job_title;
-            let company = req.body.company;
-            let annualSalary = req.body.salary;
-            let userName = req.body.userName;
-            let password = req.body.password;
+            var first_name = req.body.first_name;
+            var last_name = req.body.last_name;
+            var email = req.body.email;
+            var address = req.body.address;
+            var postal_code = req.body.postal_code;
+            var handphone = req.body.handphone;
+            var date_of_birth = req.body.DOB;
+            var job_title = req.body.job_title;
+            var company = req.body.company;
+            var annualSalary = req.body.salary;
+            var userName = req.body.userName;
+            var password = req.body.password;
 
-            let query = "call insert_customer_All(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            var query = "call insert_customer_All(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             
             mydatabase.query(query, [first_name, last_name, email, address, postal_code, handphone, date_of_birth, company, job_title, annualSalary, userName, password], (err, result) => {
                 console.log(result);
@@ -98,15 +98,15 @@ Router.post('/add/:id', (req, res) => {
             
             break;
         case "staff":
-            let first_name = req.body.first_name;
-            let last_name = req.body.last_name;
-            let email = req.body.email;
-            let position = req.body.position;
-            let department_id = req.body.department_id;
-            let userName = req.body.userName;
-            let password = req.body.password;
+            var first_name = req.body.first_name;
+            var last_name = req.body.last_name;
+            var email = req.body.email;
+            var position = req.body.position;
+            var department_id = req.body.department_id;
+            var userName = req.body.userName;
+            var password = req.body.password;
 
-            let query = "call insert_staff_ALL(?,?,?,?,?,?,?)";
+            var query = "call insert_staff_ALL(?,?,?,?,?,?,?)";
 
             mydatabase.query(query, [first_name, last_name, email, position, department_id, userName, password], (err, result) => {
                 console.log(result);

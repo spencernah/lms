@@ -81,13 +81,13 @@ Router.get('/loan', async (req, res) => {
 
 Router.get('/loanCustomer',async (req, res) => {
     if (req.session.loggedin && req.session.staff) {
-        let query = 'Select * from lms.loan_view lv WHERE EXISTS (SELECT * from access a, access_type acty WHERE lv.loanType_departmentID = acty.department_id AND a.accesstype_id = acty.access_id AND a.account_id = ?)'
+        let query = 'Select * from lms.loan_view lv WHERE EXISTS (SELECT * from access a, access_type acty WHERE lv.loanType_departmentID = acty.department_id AND a.accesstype_id = acty.access_id AND a.account_id = ?) GROUP BY lv.customer_id'
         let SQLresult = {}
         SQLresult = await queryAsync(query, [req.session.sta_id]);
         
-        res.render('currentLoan', {
+        res.render('customerlist', {
             
-            exisitngLoan: SQLresult
+            existingCustomer: SQLresult
 
         });
 
