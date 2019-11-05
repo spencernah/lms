@@ -51,19 +51,42 @@ Router.get('/view/:id', (req, res) => {
         console.log(result);
         res.render('view', {
             table: table,
-            sql: SQL,
             tableSQL: result
         });
     })
 
 });
 
-Router.get('/add/:id', (req, res) => {
+Router.get('/add/:id', async (req, res) => {
     let table = req.params.id;
+    let departmentSQL = 'SELECT * FROM department';
+    let loanTypeSQL = 'SELECT * FROM loan_type';
+    let accessTypeSQL = 'SELECT * FROM access_type';
+    let transactionSQL = 'SELECT * FROM transaction_type';
 
-    res.render('addCustomer', {
-        table: table
-    })
+    let department = {};
+    let loanType = {};
+    let accessType = {};
+    let transaction = {};
+
+    try {
+        department = await queryAsync(query, [req.session.sta_id]);
+        loanType = await queryAsync(query, [req.session.sta_id]);
+        accessType = await queryAsync(query, [req.session.sta_id]);
+        transaction = await queryAsync(query, [req.session.sta_id]);
+
+        res.render('addCustomer', {
+            table: table,
+            departments: department,
+            loanTypes: loanType,
+            accessTypes: accessType,
+            transactions: transaction
+
+        })
+    } catch (err) {
+        console.log('SQL error', err);
+        res.status(500).send('Something went wrong');
+    }
 });
 
 Router.post('/add/:id', (req, res) => {
@@ -85,7 +108,7 @@ Router.post('/add/:id', (req, res) => {
             var password = req.body.password;
 
             var query = "call insert_customer_All(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            
+
             mydatabase.query(query, [first_name, last_name, email, address, postal_code, handphone, date_of_birth, company, job_title, annualSalary, userName, password], (err, result) => {
                 console.log(result);
 
@@ -95,7 +118,7 @@ Router.post('/add/:id', (req, res) => {
 
                 res.redirect('/admin/view/customer');
             })
-            
+
             break;
         case "staff":
             var first_name = req.body.first_name;
@@ -120,94 +143,140 @@ Router.post('/add/:id', (req, res) => {
 
             break;
         case "department":
-            SQL = 'SELECT * FROM department';
+            var department_id = req.body.department_id;
+            var name = req.body.name;
 
-            mydatabase.query(query, [first_name, last_name, email, address, postal_code, handphone, date_of_birth, company, job_title, annualSalary, userName, password], (err, result) => {
+            var query = 'Insert into department values (?,?);';
+
+            mydatabase.query(query, [department_id, name], (err, result) => {
                 console.log(result);
 
                 if (err) {
                     return res.status(500).send(err);
                 }
 
-                res.redirect('admin/view/customer');
+                res.redirect('admin/view/department');
             })
             break;
         case "loan":
-            SQL = 'SELECT * FROM loan';
+            var loan_type_id = req.body.loan_type_id;
+            var account_id = req.body.account_id;
+            var loan_amount = req.body.loan_amount;
+            var outstanding_amount = req.body.outstanding_amount;
+            var start_date = req.body.start_date;
+            var end_date = req.body.end_date;
+            var status = req.body.status;
+            var approver_id = req.body.approver_id;
+            var remarks = req.body.remarks;
+            var date_of_application = req.body.date_of_application;
+            var approved_on_date = req.body.approved_on_date;
 
-            mydatabase.query(query, [first_name, last_name, email, address, postal_code, handphone, date_of_birth, company, job_title, annualSalary, userName, password], (err, result) => {
+            var query = 'call insert_loan_ALL(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);';
+
+            mydatabase.query(query, [loan_type_id, account_id, loan_amount, outstanding_amount, start_date, end_date, status, approver_id, remarks, date_of_application, approved_on_date], (err, result) => {
                 console.log(result);
 
                 if (err) {
                     return res.status(500).send(err);
                 }
 
-                res.redirect('admin/view/customer');
+                res.redirect('admin/view/loan');
             })
             break;
         case "loan_type":
-            SQL = 'SELECT * FROM loan_type';
+            var loan_type_id = req.body.loan_type_id;
+            var name = req.body.name;
+            var description = req.body.description;
+            var min_amount = req.body.min_amount;
+            var max_amount = req.body.max_amount;
+            var duration = req.body.duration;
+            var interest = req.body.interest;
+            var last_interest = req.body.last_interest;
+            var department_id = req.body.department_id;
 
-            mydatabase.query(query, [first_name, last_name, email, address, postal_code, handphone, date_of_birth, company, job_title, annualSalary, userName, password], (err, result) => {
+            var query = 'Insert into loan_type values (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+
+            mydatabase.query(query, [loan_type_id, name, description, min_amount, max_amount, duration, interest, last_interest, department_id], (err, result) => {
                 console.log(result);
 
                 if (err) {
                     return res.status(500).send(err);
                 }
 
-                res.redirect('admin/view/customer');
+                res.redirect('admin/view/loan_type');
             })
             break;
         case "payment":
-            SQL = 'SELECT * FROM payment';
+            var transaction_id = req.body.transaction_id;
+            var loan_id = req.body.loan_id;
+            var payment_amount = req.body.payment_amount;
+            var interest_rate = req.body.interest_rate;
+            var principal_amount = req.body.principal_amount;
+            var start_date = req.body.start_date;
+            var end_date = req.body.end_date;
+            var payment_frequency = req.body.payment_frequency;
 
-            mydatabase.query(query, [first_name, last_name, email, address, postal_code, handphone, date_of_birth, company, job_title, annualSalary, userName, password], (err, result) => {
+            var query = 'call insert_payment_ALL(?, ?, ?, ?, ?, ?, ?, ?)';
+
+            mydatabase.query(query, [transaction_id, loan_id, payment_amount, interest_rate, principal_amount, start_date, end_date, payment_frequency], (err, result) => {
                 console.log(result);
 
                 if (err) {
                     return res.status(500).send(err);
                 }
 
-                res.redirect('admin/view/customer');
+                res.redirect('admin/view/payment');
             })
             break;
         case "transaction_type":
-            SQL = 'SELECT * FROM transaction_type';
+            var transaction_type_id = req.body.transaction_type_id;
+            var name = req.body.name;
 
-            mydatabase.query(query, [first_name, last_name, email, address, postal_code, handphone, date_of_birth, company, job_title, annualSalary, userName, password], (err, result) => {
+            var query = 'Insert into transaction_type values (?, ?);';
+
+            mydatabase.query(query, [transaction_type_id, name], (err, result) => {
                 console.log(result);
 
                 if (err) {
                     return res.status(500).send(err);
                 }
 
-                res.redirect('admin/view/customer');
+                res.redirect('admin/view/transaction_type');
             })
             break;
         case "access":
-            SQL = 'SELECT * FROM access';
+            var account_id = req.body.account_id;
+            var accesstype_id = req.body.accesstype_id;
 
-            mydatabase.query(query, [first_name, last_name, email, address, postal_code, handphone, date_of_birth, company, job_title, annualSalary, userName, password], (err, result) => {
+            var query = 'Insert into access values (?,?)';
+
+            mydatabase.query(query, [account_id, accesstype_id], (err, result) => {
                 console.log(result);
 
                 if (err) {
                     return res.status(500).send(err);
                 }
 
-                res.redirect('admin/view/customer');
+                res.redirect('admin/view/access');
             })
             break;
         case "access_type":
-            SQL = 'SELECT * FROM access_type';
+            var access_id = req.body.access_id;
+            var name = req.body.name;
+            var approval_limit = req.body.approval_limit;
+            var department_id = req.body.department_id;
 
-            mydatabase.query(query, [first_name, last_name, email, address, postal_code, handphone, date_of_birth, company, job_title, annualSalary, userName, password], (err, result) => {
+
+            var query = 'Insert into access_type values (?, ?, ?, ?)';
+
+            mydatabase.query(query, [access_id, name, approval_limit, department_id], (err, result) => {
                 console.log(result);
 
                 if (err) {
                     return res.status(500).send(err);
                 }
 
-                res.redirect('admin/view/customer');
+                res.redirect('admin/view/access_type');
             })
             break;
         default:
@@ -223,6 +292,7 @@ Router.post('/add/:id', (req, res) => {
 
 Router.get('/edit/:id', (req, res) => {
     let table = req.params.id;
+    console.log(table);
     let id = req.query.id;
     var SQL;
 
@@ -236,7 +306,6 @@ Router.get('/edit/:id', (req, res) => {
             console.log(result);
             res.render('edit', {
                 table: table,
-                sql: SQL,
                 tableSQL: result
             });
         })
@@ -280,7 +349,6 @@ Router.get('/edit/:id', (req, res) => {
             console.log(result);
             res.render('edit', {
                 table: table,
-                sql: SQL,
                 tableSQL: result
             });
         })
@@ -289,6 +357,7 @@ Router.get('/edit/:id', (req, res) => {
 
 Router.post('/edit/:id', (req, res) => {
     let table = req.params.id;
+    
     let cus_id = req.query.cus_id;
     let first_name = req.body.first_name;
     var SQL = "Update customer set first_name = ? where cus_id = ?;";
@@ -304,7 +373,7 @@ Router.post('/edit/:id', (req, res) => {
 });
 
 
-Router.get('/delete/:id',(req, res) => {
+Router.get('/delete/access', (req, res) => {
     let table = req.params.id;
     let accountid = req.query.accountid;
     let accesstypeid = req.query.accesstypeid;
@@ -321,186 +390,3 @@ Router.get('/delete/:id',(req, res) => {
 });
 
 module.exports = Router;
-/*{
-
-    addCustomerPage: (req, res) => {
-        res.render('addCustomer', {})
-    },
-    addCustomer: (req, res) => {
-        let cusID = req.body.cusID;
-        let first_name = req.body.first_name;
-        let last_name = req.body.last_name;
-        let email = req.body.email;
-        let address = req.body.address;
-        let postal_code = req.body.postal_code;
-        let handphone = req.body.handphone;
-        let date_of_birth = req.body.DOB;
-        let job_title = req.body.job_title;
-        let company = req.body.company;
-        let annualSalary = req.body.salary;
-        let userName = req.body.userName;
-        let password = req.body.password;
-
-        let query = "Insert INTO customer values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-
-        mydatabase.query(query, [cusID,first_name,last_name,email,address,postal_code,handphone,date_of_birth,job_title,company,annualSalary, userName, password] , (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
-            res.redirect('/');
-        })
-
-    },
-    addStaffPage: (req, res) => {
-        res.render('addStaff', {})
-    },
-    addStaff: (req,res) => {
-        let staID = req.body.userID;
-        let first_name = req.body.first_name;
-        let last_name = req.body.last_name;
-        let email = req.body.email;
-        let position = req.body.position;
-        let departmentID = req.body.departmentID;
-        let userName = req.body.userName;
-        let password = req.body.password;
-
-        let query = "Insert INTO staff values (?, ?, ?, ?, ?, ?, ?, ?);";
-
-        mydatabase.query(query, [staID, first_name, last_name, email, position, departmentID, userName, password], (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
-            res.redirect('/');
-        })
-    },
-    addDepartmentPage: (req, res) => {
-        res.render('addDepartment', {})
-    },
-    addDeparment: (req,res) => {
-        let departmentID = req.body.departmentID;
-        let name = req.body.name;
-
-        let query = "Insert into department values (?, ?);";
-        mydatabase.query(query, [departmentID, name], (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
-            res.redirect('/');
-        })
-    },
-    addDepartmentPage: (req, res) => {
-        res.render('addDepartment', {})
-    },
-    addLoanRequest: (req,res) => {
-        let requestID = req.body.requestID;
-        let status = req.body.status;
-        let remark = req.body.remark;
-        let approverID = req.body.approverID;
-        let accountID = req.body.accountID;
-        let loanID = req.body.loanID;
-        let loanTypeID = req.body.loanTypeID;
-        let loanAmount = req.body.loanAmount;
-
-        let query = "Insert into request (requestID, status, remark, approverID, accountID, loanID, loanTypeID, loanAmount) values (?, ?, ?, ?, ?, ?, ?, ?);"
-
-        mydatabase.query(query, [requestID, status,remark, approverID, accountID, loanID, loanTypeID, loanAmount], (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
-            res.redirect('/');
-        })
-
-    },
-    addLoanPage: (req, res) => {
-        res.render('addLoan', {})
-    },
-    addLoan: (req,res) => {
-        let loanID = req.body.loanID;
-        let loanTypeID = req.body.loanTypeID;
-        let accountID = req.body.accountID;
-        let loanAmount = req.body.loanAmount;
-        let outstandingAmount = req.body.outstandingAmount;
-        let startDate = req.body.startDate;
-        let dueData = req.body.dueData;
-
-        let query = "Insert into loan values (?, ?, ?, ?, ?, ?, ?);";
-
-        mydatabase.query(query, [loanID, loanTypeID, accountID, loanAmount, outstandingAmount, startDate, dueData], (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
-            res.redirect('/');
-        })
-    },
-    addPaymentPage: (req, res) => {
-        res.render('addPayment', {})
-    },
-    addPayment: (req,res) => {
-        let paymentID = req.body.paymentID;
-        let transactionID = req.body.transactionID;
-        let loanID = req.body.loanID;
-        let amount = req.body.amount;
-        let date = req.body.date;
-
-        let query = "Insert into payment values ( ?, ?, ?, ?, ?);";
-
-        mydatabase.query(query, [paymentID, transactionID, loanID, amount, date], (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
-            res.redirect('/');
-        })
-    },
-    addTransactionTypePage: (req, res) => {
-        res.render('TransactionType', {})
-    },
-    addTransactionType: (req,res) => {
-        let transactionID = req.body.transactionID;
-        let transactionName = req.body.transactionName;
-
-        let query = "Insert into transaction_type values ('transactionID','transactionName');";
-
-        mydatabase.query(query, [transactionID, transactionName], (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
-            res.redirect('/');
-        })
-    },
-    addAcessTypePage: (req, res) => {
-        res.render('addAccessType', {})
-    },
-    addAccessType: (req,res) => {
-        let accessTypeID = req.body.accessTypeID;
-        let name = req.body.name;
-        let approvalLimit = req.body.approvalLimit;
-        let departmentID = req.body.departmentID;
-
-
-        let query = "Insert into access_type values (?, ?, ?, ?);";
-
-        mydatabase.query(query, [accessTypeID, name, approvalLimit, departmentID], (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
-            res.redirect('/');
-        })
-    },
-    addAccessPage: (req, res) => {
-        res.render('addAccess', {})
-    },
-    addAccess: (req,res) => {
-        let accountID = req.body.accountID;
-        let accessTypeID = req.body.accessTypeID;
-
-        let query = "Insert into access values ( ?, ?);";
-
-        mydatabase.query(query, [accountID, accessTypeID], (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
-            res.redirect('/');
-        })
-    }
-
-}*/

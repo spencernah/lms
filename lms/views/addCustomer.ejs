@@ -16,7 +16,7 @@
         <tr>
             <td style="background-color:#eeeeee;">
 
-                <form action="" method="post">
+                <form action="" method="post" id="addtable">
                     <% if(table == "customer"){%>
                     First name: <input type="text" name="first_name" id="first_name"><br />
                     Last name: <input type="text" name="last_name" id="last_name"><br />
@@ -37,73 +37,109 @@
                         Last name: <input type="text" name="last_name" id="last_name"><br />
                         Email: <input type="text" name="email" id="email"><br />
                         Position: <input type="text" name="position" id="position"><br />
-                        Department: <input type="text" name="department" id="department"><br />
+                        <select name="Language"> <option value="">Department ID: </option> 
+
+                            <% departments.forEach(function(department) { %>
+                                <option value="<%= department.department_id %>"><%= department.department_id %></option><br>
+                                <% }); %>
+                            </select><br />
                         Username: <input type="text" name="userName" id="userName"><br />
-                    Password: <input type="password" name="password" id="password"><br />
+                        Password: <input type="password" name="password" id="password"><br />
                     <% } %>
 
 
 
                     <% if(table == "department"){%>
-                        Department ID: 
-                        Department name:
+                        Department ID: <input type="text" name="department_id" id="department_id"><br />
+                        Department name: <input type="text" name="name" id="name"><br />
                     <% } %>
 
 
                     <% if(table == "access_type"){%>
-                        Access_ID: 
-                        Name:
-                        Approval Limit:
-                        Department:
+                        Access_ID: <input type="text" name="access_id" id="access_id"><br />
+                        Name: <input type="text" name="name" id="name"><br />
+                        Approval Limit: <input type="text" name="approval_limit" id="approval_limit"><br />
+                        <select name="department_id"> <option value="">Department ID:</option> 
+
+                        <% departments.forEach(function(department) { %>
+                            <option value="<%= department.department_id %>"><%= department.department_id %></option><br>
+                            <% }); %>
+                        </select><br />
                     <% } %>
 
                     <% if(table == "access"){%>
-                        Account ID:
-                        Access Type:
+                        Account ID: <input type="text" name="account_id" id="account_id">
+                        <select name="accesstype_id"> <option value="">Access Type: </option> 
+
+                            <% accessTypes.forEach(function(accessType) { %>
+                                <option value="<%= accessType.access_id %>"><%= accessType.access_id %></option><br>
+                                <% }); %>
+                            </select><br />
                     <% } %>
 
                     <% if(table == "loan_type"){%>
-                        Loan Type ID:
-                        Name:
-                        Description:
-                        Min Amount:
-                        Max Amount:
-                        Duration:
-                        Interest:
-                        Last Interest:
-                        Department:
+                        Loan Type ID: <input type="text" name="loan_type_id" id="loan_type_id"><br />
+                        Name: <input type="text" name="name" id="name"><br />
+                        Description: <input type="text" name="description" id="description"><br />
+                        Min Amount: <input type="text" name="min_amount" id="min_amount"><br />
+                        Max Amount: <input type="text" name="max_amount" id="max_amount"><br />
+                        Duration: <input type="text" name="duration" id="duration"><br />
+                        Interest: <input type="text" name="interest" id="interest"><br />
+                        Last Interest: <input type="text" name="last_interest" id="last_interest"><br />
+                        <select name="department_id"> <option value="">Department ID:</option> 
+
+                            <% departments.forEach(function(department) { %>
+                                <option value="<%= department.department_id %>"><%= department.department_id %></option><br>
+                                <% }); %>
+                            </select><br />
                     <% } %>
 
                     <% if(table == "loan"){%>
-                        Loan Type:
-                        Status:
-                        Customer:
-                        Approver:
-                        Remarks:
-                        Loan Amount:
-                        Application Date:
-                        Approval Date:
-                        Outstanding Amount:
-                        Start Date:
-                        End Date:
+                        <select name="loan_type_id"> <option value="">Loan Type: </option> 
+
+                            <% loanTypes.forEach(function(loanType) { %>
+                                <option value="<%= loanType.loan_type_id %>"><%= loanType.loan_type_id %></option><br>
+                                <% }); %>
+                            </select><br />
+                        <select name="status"> <option value="">Status: </option> 
+                            
+                                <option value="new">new</option><br>
+                                <option value="approved">approved</option><br>
+                                <option value="rejected">new</option><br>
+                                <option value="withdrawn">new</option><br>
+                            </select><br />
+                        Customer: <input type="text" name="account_id" id="account_id"><br />
+                        Approver: <input type="text" name="approver_id" id="approver_id"><br />
+                        Remarks: <textarea form="addtable" rows="4" cols="50" name="remarks" id="remarks"></textarea><br />
+                        Loan Amount: <input type="text" name="loan_amount" id="loan_amount"><br />
+                        Application Date: <input type="date" name="date_of_application" id="date_of_application"><br />
+                        Approval Date: <input type="date" name="approved_on_date" id="approved_on_date"><br />
+                        Outstanding Amount: <input type="text" name="outstanding_amount" id="outstanding_amount"><br />
+                        Start Date: <input type="date" name="start_date" id="start_date"><br />
+                        End Date: <input type="date" name="end_date" id="end_date"><br />
 
                     <% } %>
 
                     <% if(table == "payment"){%>
-                        Transaction Type:
-                        Loan ID:
-                        Payment Amount:
-                        Interest Rate:
-                        Principal Amount:
-                        Start Date:
-                        End Date:
-                        Payment Frequency:
+                        <select name="transaction_id"> <option value="">Transaction Type:</option> 
+
+                            <% transactions.forEach(function(transaction) { %>
+                                <option value="<%= transaction.transaction_type_id %>"><%= transaction.transaction_type_id %></option><br>
+                                <% }); %>
+                            </select><br />
+                        Loan ID: <input type="text" name="loan_id" id="loan_id"><br />
+                        Payment Amount: <input type="text" name="payment_amount" id="payment_amount"><br />
+                        Interest Rate: <input type="text" name="interest_rate" id="interest_rate"><br />
+                        Principal Amount: <input type="text" name="principal_amount" id="principal_amount"><br />
+                        Start Date: <input type="date" name="start_date" id="start_date"><br />
+                        End Date: <input type="date" name="end_date" id="end_date"><br />
+                        Payment Frequency: <input type="text" name="payment_frequency" id="payment_frequency"><br />
 
                     <% } %>
 
                     <% if(table == "transaction_type"){%>
-                        Transaction Type ID:
-                        Name:
+                        Transaction Type ID: <input type="text" name="transaction_type_id" id="transaction_type_id"><br />
+                        Name: <input type="text" name="name" id="name"><br />
 
                     <% } %>
                     <input type="submit" name="add me" value="display">
