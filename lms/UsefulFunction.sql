@@ -12,7 +12,7 @@ VIEW `loan_view` AS
         `lt`.`department_id` AS `loanType_departmentID`,
         `d`.`name` AS `loanType_department`,
         `l`.`status` AS `status`,
-        `l`.`account_id` AS `account_id`,
+        `l`.`account_id` AS `customer_id`,
         `c`.`first_name` AS `customer_firstName`,
         `c`.`last_name` AS `customer_lastName`,
         `c`.`email` AS `customer_email`,
@@ -29,7 +29,13 @@ VIEW `loan_view` AS
         `s`.`email` AS `staff_email`,
         `s`.`position` AS `staff_position`,
         `s`.`department_id` AS `staff_departmentID`,
-        `d`.`name` AS `staff_department`
+        `l`.`remarks` AS `remarks`,
+        `l`.`start_date` AS `start_date`,
+        `l`.`end_date` AS `end_date`,
+        `l`.`loan_amount` AS `loan_amount`,
+        `l`.`date_of_application` AS `date_of_application`,
+        `l`.`approved_on_date` AS `approved_on_date`,
+        `l`.`outstanding_amount` AS `outstanding_amount`
     FROM
         ((((`loan` `l`
         JOIN `customer` `c`)
@@ -41,7 +47,6 @@ VIEW `loan_view` AS
             AND (`c`.`cus_id` = `l`.`account_id`)
             AND (`l`.`approver_id` = `s`.`staff_id`)
             AND (`d`.`department_id` = `lt`.`department_id`)
-            AND (`s`.`department_id` = `d`.`department_id`)
             AND (`l`.`status` = 'approved'))
 
 
@@ -77,7 +82,6 @@ END
 
 
 
-
 -- auto increase loan id insert
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_loan_ALL`(
@@ -107,7 +111,6 @@ BEGIN
     
     
 END
-
 
 
 
@@ -161,8 +164,6 @@ BEGIN
     
 END
 
--- 
-
 
 
 
@@ -177,6 +178,6 @@ BEGIN
 	
 	set @duration = (SELECT lt.duration from loan_type lt, loan l where l.loan_type_id = lt.loan_type_id AND l.loan_id = ID limit 1);
     set @loanAmount = (SELECT loan_amount from loan where loan_id = ID LIMIT 1);
-    UPDATE loan SET outstand_amount = @loanAmount, start_date = current_date()+1, approved_on_date = current_date(), `status` = "approved", end_date = current_date() + INTERVAL @duration YEAR, approver_id = approveID WHERE loan_id = ID ; 
+    UPDATE loan SET outstanding_amount = @loanAmount, start_date = current_date()+1, approved_on_date = current_date(), `status` = "approved", end_date = current_date() + INTERVAL @duration YEAR, approver_id = approveID WHERE loan_id = ID ; 
     
 END
