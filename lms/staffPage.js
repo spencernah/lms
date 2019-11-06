@@ -34,7 +34,7 @@ Router.get('/', async (req, res) => {
         let currentLoan = await queryAsync(currentLoanSQL, [req.session.sta_id]);
 
 
-        res.render('staffUpgrade', {
+        res.render('staffHome', {
             staffID: req.session.sta_id,
             staffRes: staffRes[0],
             accessRes: accessRes,
@@ -100,7 +100,7 @@ Router.get('/customerlist',async (req, res) => {
 
         
         
-        res.render('customerlist', {
+        res.render('staffCustomerlist', {
             
             existingCustomer: SQLresult
 

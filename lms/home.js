@@ -7,8 +7,8 @@ const session = require('express-session');
 
 const adminAddPage = require('./adding');
 const staffPage = require('./staffPage')
-const {addCustomerPage, addCustomer} = require('./adding');
-const {adminPage, viewTable, editTable, editPage} = require('./admin');
+//const {addCustomerPage, addCustomer} = require('./adding');
+//const {adminPage, viewTable, editTable, editPage} = require('./admin');
 
 const {
   promisify,
@@ -26,6 +26,8 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/views/'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
+
 app.use('/admin',adminAddPage);
 app.use('/staff',staffPage);
 
@@ -35,8 +37,8 @@ app.use('/staff',staffPage);
 
 
 app.get('/', (req, res) => {
-  // Education staff: 30000004, admin: 30000025
-  req.session.sta_id = '30000004';
+  // Education staff: 30000004, admin: 30000025, double access: 30000024, 
+  req.session.sta_id = '30000024';
   req.session.admin = true;
   req.session.staff = true;
   req.session.loggedin = true;

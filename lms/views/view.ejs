@@ -234,7 +234,7 @@
             </tr>
             <% tableSQL.forEach((loan_type) => { %>
             <tr>
-                <td><%= loan_type.access_id %></td>
+                <td><%= loan_type.loan_type_id %></td>
                 <td><%= loan_type.name %></td>
                 <td><%= loan_type.description %></td>
                 <td><%= loan_type.min_amount %></td>
@@ -243,7 +243,7 @@
                 <td><%= loan_type.interest %></td>
                 <td><%= loan_type.last_interest %></td>
                 <td><%= loan_type.department_id %></td>
-                <td><a href="/admin/edit/<%=table %>?id=<%= access_type.access_id %>">Edit</a></td>
+                <td><a href="/admin/edit/<%=table %>?id=<%= loan_type.access_id %>">Edit</a></td>
             </tr>
             <% }) %>
             <% } %>
